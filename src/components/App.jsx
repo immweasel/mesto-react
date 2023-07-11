@@ -1,13 +1,11 @@
+import Header from "./Header/Header.jsx";
+
 function App() {
   return (
     <div className="page__content">
-      <header className="header">
-        <img
-          className="header__logo"
-          src="#"
-          alt="Место Россия"
-        />
-      </header>
+      
+      <Header />
+      
       <main className="main">
         <section className="profile">
           <div className="profile__container">
