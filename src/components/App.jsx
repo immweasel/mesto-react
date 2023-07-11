@@ -1,32 +1,17 @@
 import Header from "./Header/Header.jsx";
+import Main from "./Main/Main.jsx";
+import Footer from "./Footer/Footer.jsx";
 
 function App() {
   return (
     <div className="page__content">
       
       <Header />
+
+      <Main />
+
+      <Footer />
       
-      <main className="main">
-        <section className="profile">
-          <div className="profile__container">
-            <button className="profile__avatar-button button" type="button">
-              <img className="profile__avatar" src="#" alt="Аватарка" />{" "}
-            </button>
-            <div className="profile__info">
-              <div className="profile__edit-container">
-                <h1 className="profile__name">ляляля</h1>
-                <button className="profile__edit button" type="button" />
-              </div>
-              <p className="profile__description" />
-            </div>
-          </div>
-          <button className="profile__add button" type="button" />
-        </section>
-        <section className="photo-grid" />
-      </main>
-      <footer className="footer">
-        <p className="footer__copyright">© 2023 Максимова Кира</p>
-      </footer>
       <div className="popup popup_type_edit">
         <div className="popup__container">
           <button className="popup__close button" type="button" />
