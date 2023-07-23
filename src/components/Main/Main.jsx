@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import api from "../../utils/api";
 import Card from "../Card/Card.jsx";
 
-export default function Main({onEditProfile, onAddPlace, onEditAvatar}) {
+export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
 
   const [userName, setUserName] = useState('');
   const [userDescription, setUserDescription] = useState('');
@@ -41,7 +41,7 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar}) {
           {cards.map(card => {
             return (
               <div className="photo-grid__item" key={card._id}>
-                <Card card={card}/>
+                <Card card={card} onCardClick={onCardClick}/>
               </div>
             )
           })}

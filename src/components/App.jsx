@@ -10,11 +10,14 @@ function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
+  const [isImagePopup, setImagePopup] = useState(false);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
+    setImagePopup(false);
   }
 
   function handleEditAvatarClick() {
@@ -33,9 +36,11 @@ function App() {
   
   // }
 
-  // function handleCardClick() {
-
-  // }
+  function handleCardClick(card) {
+    setSelectedCard(card);
+    setImagePopup(true);
+    // setEventListenerForDocument()
+  }
 
   return (
     <div className="page__content">
@@ -46,6 +51,7 @@ function App() {
         onEditProfile = {handleEditProfileClick}
         onAddPlace = {handleAddPlaceClick}
         onEditAvatar = {handleEditAvatarClick}
+        onCardClick = {handleCardClick}
       />
 
       <Footer />
@@ -142,7 +148,7 @@ function App() {
       </div>
       </PopupWithForm>
 
-      <PopupImage />
+      <PopupImage card={selectedCard} isOpen={isImagePopup} onClose={closeAllPopups} />
 
     </div>
   );
