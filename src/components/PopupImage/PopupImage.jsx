@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function PopupImage({ card, isOpen, onClose }) {
   return(
-    <div className={`popup popup_type_figure ${isOpen && 'popup_opened'}`}>
+    <div className={`popup popup_type_figure ${isOpen ? 'popup_opened' : ""}`}>
       {card && (
         <figure className="popup__container popup__container_type_figure">
         <button
