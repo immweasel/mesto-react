@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-import api from "../../utils/api";
+import api from "../../utils/Api.js";
 import Card from "../Card/Card.jsx";
+import React from "react";
 
-export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick}) {
+export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardClick, onDeleteCard}) {
 
-  const [userName, setUserName] = useState('');
-  const [userDescription, setUserDescription] = useState('');
-  const [userAvatar, setUserAvatar] = useState('');
-  const [cards, setCards] = useState([]);
+  const [userName, setUserName] = React.useState('');
+  const [userDescription, setUserDescription] = React.useState('');
+  const [userAvatar, setUserAvatar] = React.useState('');
+  const [cards, setCards] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     Promise.all([api.getInfo(), api.getCards()])
       .then(([dataUser, dataCard]) => {
         setUserName(dataUser.name);
         setUserDescription(dataUser.about);
         setUserAvatar(dataUser.avatar);
-        dataCard.forEach((data) => data.myid = dataUser._id);
         setCards(dataCard);
-  })
+        // dataCard.forEach((data) => data.myid = dataUser._id);
+      })
+      .catch(err => console.log(`Возникла какая-то ошибка: ${err}`))
 }, []);
 
   return(
@@ -25,7 +26,7 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
       <section className="profile">
         <div className="profile__container">
           <button className="profile__avatar-button button" type="button" onClick={onEditAvatar}>
-            <img className="profile__avatar" src={userAvatar} alt="Аватарка" />{" "}
+            <img className="profile__avatar" src={userAvatar ? userAvatar.toString() : ''} alt="Аватарка" />
           </button>
           <div className="profile__info">
             <div className="profile__edit-container">
@@ -41,7 +42,7 @@ export default function Main({onEditProfile, onAddPlace, onEditAvatar, onCardCli
           {cards.map(card => {
             return (
               <div className="photo-grid__item" key={card._id}>
-                <Card card={card} onCardClick={onCardClick}/>
+                <Card card={card} onCardClick={onCardClick} onDeleteCard={onDeleteCard}/>
               </div>
             )
           })}

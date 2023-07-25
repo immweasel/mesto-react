@@ -3,21 +3,24 @@ import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import PopupImage from "./PopupImage/PopupImage.jsx";
-import { useState } from "react";
+import React from "react";
 
 function App() {
 
-  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
-  const [isImagePopup, setImagePopup] = useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
+  const [selectedCard, setSelectedCard] = React.useState({});
+  const [isImagePopup, setImagePopup] = React.useState(false);
+  const [isDeleteCardPopup, setDeleteCardPopup] = React.useState(false);
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setImagePopup(false);
+    setSelectedCard(null);
+    setDeleteCardPopup(false);
   }
 
   function handleEditAvatarClick() {
@@ -32,9 +35,9 @@ function App() {
     setIsAddPlacePopupOpen(true);
   }
 
-  // function handleDeleteClick() {
-  
-  // }
+  function handleDeleteClick() {
+    setDeleteCardPopup(true);
+  }
 
   function handleCardClick(card) {
     setSelectedCard(card);
@@ -52,6 +55,7 @@ function App() {
         onAddPlace = {handleAddPlaceClick}
         onEditAvatar = {handleEditAvatarClick}
         onCardClick = {handleCardClick}
+        onDeleteCard = {handleDeleteClick}
       />
 
       <Footer />
@@ -59,6 +63,7 @@ function App() {
       <PopupWithForm 
         name = 'edit'
         title = 'Редактировать профиль'
+        textButton = 'Сохранить'
         isOpen = {isEditProfilePopupOpen}
         onClose = {closeAllPopups}
       >
@@ -127,11 +132,14 @@ function App() {
         name = 'delete"'
         title = 'Вы уверены?'
         textButton = 'Да'
+        isOpen={isDeleteCardPopup}
+        onClose={closeAllPopups}
       />
 
       <PopupWithForm 
         name = 'avatar'
         title = 'Обновить аватар'
+        textButton = 'Сохранить'
         isOpen = {isEditAvatarPopupOpen}
         onClose = {closeAllPopups}
       >
@@ -148,7 +156,11 @@ function App() {
       </div>
       </PopupWithForm>
 
-      <PopupImage card={selectedCard} isOpen={isImagePopup} onClose={closeAllPopups} />
+      <PopupImage 
+        card={selectedCard} 
+        isOpen={isImagePopup} 
+        onClose={closeAllPopups} 
+      />
 
     </div>
   );
