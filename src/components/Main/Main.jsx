@@ -1,6 +1,7 @@
-import api from "../../utils/api.js";
 import Card from "../Card/Card.jsx";
 import React from "react";
+import { useContext } from "react";
+import CurrentUserContext from "../../contexts/CurrentUserContext.js";
 
 export default function Main({
   onEditProfile,
@@ -8,23 +9,14 @@ export default function Main({
   onEditAvatar,
   onCardClick,
   onDeleteCard,
+  cards
 }) {
-  const [userName, setUserName] = React.useState("");
-  const [userDescription, setUserDescription] = React.useState("");
-  const [userAvatar, setUserAvatar] = React.useState("");
-  const [cards, setCards] = React.useState([]);
 
-  React.useEffect(() => {
-    Promise.all([api.getInfo(), api.getCards()])
-      .then(([dataUser, dataCard]) => {
-        setUserName(dataUser.name);
-        setUserDescription(dataUser.about);
-        setUserAvatar(dataUser.avatar);
-        setCards(dataCard);
-        // dataCard.forEach((data) => data.myid = dataUser._id);
-      })
-      .catch((err) => console.log(`Возникла какая-то ошибка: ${err}`));
-  }, []);
+  const currentUser = useContext(CurrentUserContext)
+
+  // const [userName, setUserName] = React.useState("");
+  // const [userDescription, setUserDescription] = React.useState("");
+  // const [userAvatar, setUserAvatar] = React.useState("");
 
   return (
     <main className="main">
@@ -37,20 +29,20 @@ export default function Main({
           >
             <img
               className="profile__avatar"
-              src={userAvatar ? userAvatar.toString() : ""}
+              src={currentUser.avatar ? currentUser.avatar : ""}
               alt="Аватарка"
             />
           </button>
           <div className="profile__info">
             <div className="profile__edit-container">
-              <h1 className="profile__name">{userName}</h1>
+              <h1 className="profile__name">{currentUser.name ? currentUser.name : ""}</h1>
               <button
                 className="profile__edit button"
                 type="button"
                 onClick={onEditProfile}
               />
             </div>
-            <p className="profile__description">{userDescription}</p>
+            <p className="profile__description">{currentUser.about ? currentUser.about : ""}</p>
           </div>
         </div>
         <button

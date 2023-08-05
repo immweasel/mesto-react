@@ -3,16 +3,22 @@ import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
+import api from "../utils/api.js";
 
 function App() {
-
+//стейты попаов
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState({});
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setDeleteCardPopupOpen] = React.useState(false);
+  //стейт контекста
+  const [currentUser, setCurrentUser] = useState([])
+  //стейты карточки
+  const [cards, setCards] = React.useState([]);
 
   const setAllStatesForClosePopups = useCallback (() => {
     setIsEditProfilePopupOpen(false);
@@ -66,7 +72,18 @@ function App() {
     setEventListenerForDocument()
   }
 
+  React.useEffect(() => {
+    Promise.all([api.getInfo(), api.getCards()])
+      .then(([dataUser, dataCard]) => {
+        setCurrentUser(dataUser);
+        setCards(dataCard);
+        // dataCard.forEach((data) => data.myid = dataUser._id);
+      })
+      .catch((err) => console.log(`Возникла какая-то ошибка: ${err}`));
+  }, []);
+
   return (
+    <CurrentUserContext.Provider value={currentUser}>
     <div className="page__content">
       
       <Header />
@@ -77,6 +94,7 @@ function App() {
         onEditAvatar = {handleEditAvatarClick}
         onCardClick = {handleCardClick}
         onDeleteCard = {handleDeleteClick}
+        cards = {cards}
       />
 
       <Footer />
@@ -184,6 +202,7 @@ function App() {
       />
 
     </div>
+    </CurrentUserContext.Provider>
   );
 }
 
