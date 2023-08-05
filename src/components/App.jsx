@@ -3,7 +3,7 @@ import Main from "./Main/Main.jsx";
 import Footer from "./Footer/Footer.jsx";
 import PopupWithForm from "./PopupWithForm/PopupWithForm.jsx";
 import ImagePopup from "./ImagePopup/ImagePopup.jsx";
-import React from "react";
+import React, { useCallback } from "react";
 
 function App() {
 
@@ -14,34 +14,56 @@ function App() {
   const [isImagePopupOpen, setImagePopupOpen] = React.useState(false);
   const [isDeleteCardPopupOpen, setDeleteCardPopupOpen] = React.useState(false);
 
-  function closeAllPopups() {
+  const setAllStatesForClosePopups = useCallback (() => {
     setIsEditProfilePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setImagePopupOpen(false);
     setSelectedCard(null);
     setDeleteCardPopupOpen(false);
+  },[])
+
+  const closePopupByEscape = useCallback ((evt) => {
+    if (evt.key === 'Escape') {
+      setAllStatesForClosePopups()
+      document.removeEventListener("keydown", closePopupByEscape)
+    }
+  },[setAllStatesForClosePopups])
+
+  const closeAllPopups = useCallback (() => {
+    setAllStatesForClosePopups()
+    document.removeEventListener("keydown", closePopupByEscape)
+  },[setAllStatesForClosePopups, closePopupByEscape])
+
+  function setEventListenerForDocument() {
+    document.addEventListener("keydown", closePopupByEscape);
   }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(true);
+    setEventListenerForDocument()
   }
 
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true);
+    setEventListenerForDocument()
   }
 
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true);
+    setEventListenerForDocument()
+    // hangEventListener()
   }
 
   function handleDeleteClick() {
     setDeleteCardPopupOpen(true);
+    setEventListenerForDocument()
   }
 
   function handleCardClick(card) {
     setSelectedCard(card);
     setImagePopupOpen(true);
+    setEventListenerForDocument()
   }
 
   return (
