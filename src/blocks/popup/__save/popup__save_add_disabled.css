@@ -7,4 +7,6 @@
 
 .popup__save_add_disabled:hover {
   opacity: 0.2;
+  cursor: none;
+  pointer-events: none;
 }
