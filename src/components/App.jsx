@@ -8,6 +8,7 @@ import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import api from "../utils/api.js";
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup.jsx";
 import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup.jsx";
+import AddPlacePopup from "./AddPlacePopup/AddPlacePopup.jsx";
 
 function App() {
   //стейты попаов
@@ -111,12 +112,22 @@ function App() {
   function handleUpdateAvatar(dataUser, reset) {
     api.setNewAvatar(dataUser)
       .then(res => {
-        setCurrentUser(dataUser)
+        setCurrentUser(res)
         closeAllPopups()
         reset()
       })
       .catch((err) => console.log(`Возникла какая-то ошибка: ${err}`));
     }
+
+  function handleAddPlaceSubmit(dataCard, reset) {
+    api.addCard(dataCard)
+      .then(res => {
+        setCards([res, ...cards])
+        closeAllPopups()
+        reset()
+      })
+      .catch((err) => console.log(`Возникла какая-то ошибка: ${err}`));
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -141,38 +152,11 @@ function App() {
           onClose={closeAllPopups}
         />
 
-        <PopupWithForm
-          name='add'
-          title='Новое место'
-          textButton='Создать'
-          isOpen={isAddPlacePopupOpen}
+        <AddPlacePopup
+          onAddPlace={handleAddPlaceSubmit}
           onClose={closeAllPopups}
-        >
-          <div className="popup__text-input-container">
-            <input
-              className="popup__text popup__text_place-name"
-              type="text"
-              name="title"
-              id="title"
-              placeholder="Название"
-              minLength={2}
-              maxLength={30}
-              required=""
-            />
-            <span className="popup__invalid popup__invalid_type_title" />
-          </div>
-          <div className="popup__text-input-container">
-            <input
-              className="popup__text popup__text_place-link"
-              type="url"
-              name="link"
-              id="link"
-              placeholder="Ссылка на картинку"
-              required=""
-            />
-            <span className="popup__invalid popup__invalid_type_link" />
-          </div>
-        </PopupWithForm>
+          isOpen={isAddPlacePopupOpen}
+        />
 
         <PopupWithForm
           name='delete"'
