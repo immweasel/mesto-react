@@ -19,7 +19,7 @@ function App() {
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [isDeleteCardPopupOpen, setDeleteCardPopupOpen] = useState(false);
   //стейт контекста
-  const [currentUser, setCurrentUser] = useState([]);
+  const [currentUser, setCurrentUser] = useState('');
   //стейты карточки
   const [cards, setCards] = useState([]);
   const [deleteCardId, setDeleteCardId] = useState('');
